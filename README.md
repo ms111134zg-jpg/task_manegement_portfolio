@@ -3,6 +3,9 @@
 FastAPI + PostgreSQL（async SQLAlchemy）で、**タスク管理のCRUD / 一覧（検索・フィルタ・ソート・ページング）/ 集計**までを実装した API オンリーのMVPです。  
 Swagger UI（`/docs`）から動作確認できます。
 
+
+![demo](docs/task_management_SwaggerUI.png)
+
 ---
 
 ## できること（主な機能）
