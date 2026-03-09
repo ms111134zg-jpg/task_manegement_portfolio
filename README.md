@@ -12,6 +12,8 @@ flowchart LR
   API -->|async SQLAlchemy| DB[(PostgreSQL)]
 ```
 
+
+![demo](docs/task_management_page.png)
 ---
 
 ## 概要と学習目標
