@@ -7,5 +7,4 @@ myenv/
 .env
 
 blueprint/
-frontend/
 INSERT INTO tasks.txt

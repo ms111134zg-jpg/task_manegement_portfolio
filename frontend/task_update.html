@@ -1,0 +1,85 @@
+<!doctype html>
+<head lang="ja">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>タスク更新</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>タスク更新</h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html">←一覧に戻る</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form id="check_form">
+            <p>更新するタスクid：<br>
+            <input type="number" id="task_id" min=1 ></p>
+            <p id="task_check" class="is-hidden">更新するタスク（確認）：<br>
+            <table id="check_table" class="is-hidden">
+                <thead>
+                    <tr>
+                        <th>Task_id</th>
+                        <th>User_id</th>
+                        <th>タイトル</th>
+                        <th>内容</th>
+                        <th>ステータス</th>
+                        <th>優先度</th>
+                        <th>期日</th>
+                        <!-- <th>作成日</th> -->
+                        <!-- <th>更新日</th> -->
+                        <!-- <th></th> -->
+                    </tr>
+                </thead>
+                <tbody id="task_tbody">
+
+                </tbody>
+            </table></p>
+        </form>
+        <form id="update_form">
+            <p><b>更新内容：</b><small>(※更新する箇所のみ記入)</small></p>
+            <p>ユーザーID：<br>
+            <input type="number" id="task_user_id" min=1></p>
+            <p>タイトル：<br>
+            <input type="text" id="task_title"></p>
+            <p>内容：<br>
+            <input type="text" id="task_description">
+            <label class="checkbox-line">
+                <input type="checkbox" id="task_description_clear">
+                <span>内容を未設定にする</span>
+            </label>
+            </p>
+            <p>ステータス：<br>
+            <select id="task_status">
+                <option value=""></option>
+                <option value="todo">todo</option>
+                <option value="doing">doing</option>
+                <option value="done">done</option>
+            </select></p>
+            <p>優先度：<br>
+            <input type="number" id="task_priority" min=1 max=5></p>
+            <p>期日：<br>
+            <input type="date" id="task_due_date">
+            <label class="checkbox-line">
+                <input type="checkbox" id="task_due_date_clear">
+                <span>期日を未設定にする</span>
+            </label>
+            </p>
+            <p><input type="button" id="update_btn" value="更新"></p>
+        </form>
+
+        <div id="loading" class="loading is-hidden">処理中...</div>
+        <div id="registration" class="registration is-hidden">登録完了</div>
+        <!-- <div id="registration" >登録完了</div> -->
+        <div id="error" class="error is-hidden"></div>
+
+    </main>
+
+    <script type="module" src="./js/pages/task_update.js"></script>
+</body>
+</html>

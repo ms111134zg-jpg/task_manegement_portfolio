@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>タスク詳細</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <header>
+        <h1>タスク新規作成</h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html">←一覧に戻る</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form id="task_creat">
+            <p>ユーザー：<br>
+            <select id="user_id">
+                <option value=""></option>
+            </select></p>
+            <!-- <input type="number" id="user_id" min=1 ></p> -->
+            <p>タイトル：<br>
+            <input type="text" id="title"></p>
+            <p>内容：<br>
+            <input type="text" id="description"></p>
+            <p>ステータス：<br>
+            <select id="status">
+                <option value="todo">todo</option>
+                <option value="doing">doing</option>
+                <option value="done">done</option>
+            </select></p>
+            <p>優先度：<br>
+            <input type="number" id="priority" min="1" max="5" placeholder="１～５"></p>
+            <p>期日：<br>
+            <input type="date" id="due_date"></p>
+
+            <p><input type="button" value="新規作成" id="create_btn"></p>
+        </form>
+
+        <div id="loading" class="loading is-hidden">処理中...</div>
+        <div id="error" class="error is-hidden"></div>
+
+        <div id="registration" class="registration is-hidden">登録完了</div>
+
+    </main>
+
+    <script type="module" src="./js/pages/task_new.js"></script>
+</body>
+</html>

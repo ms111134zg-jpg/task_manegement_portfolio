@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>タスク詳細</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>タスク詳細</h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html">←一覧に戻る</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div id="loading" class="loading is-hidden">処理中...</div>
+        <div id="error" class="error is-hidden"></div>
+
+        <dl>
+            <dt>Task_id</dt><dd id="task_id"></dd>
+            <dt>Title</dt><dd id="task_title"></dd>
+            <dt>Description</dt><dd id="task_description"></dd>
+            <dt>Status</dt><dd id="task_status"></dd>
+            <dt>User</dt><dd id="task_user"></dd>
+            <dt>Due</dt><dd id="task_due"></dd>
+            <dt>Created</dt><dd id="task_created"></dd>
+            <dt>Updated</dt><dd id="task_updated"></dd>
+        </dl>
+
+    </main>
+
+    <script type="module" src="./js/pages/task_detail.js"></script>
+</body>
+</html>

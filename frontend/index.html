@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>タスク管理</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+<!-- index.html : 一覧＋検索/フィルタ -->
+<body>
+    <header>
+        <h1>タスク管理</h1>
+        <nav>
+            <ul>
+                <li><a href="./task_new.html">タスク新規作成</a></li>
+                <li><a href="./task_update.html">タスク更新</a></li>
+                <li><a href="./task_delete.html">タスク削除</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>タスク検索</h2>
+        <form id="search_form" name="top_form" >
+            <!-- <p>タスクid：<br>
+            <input type="number" id="task_id" min="0"></p> -->
+            <p>検索入力：<br>
+            <input type="text" name="name" id="q_input"></p>
+            <p>ステータス選択：<br>
+            <select name="status" id="status_select">
+                <option value=""></option>
+                <option value="todo">todo</option>
+                <option value="doing">doing</option>
+                <option value="done">done</option>
+            </select></p>
+            <p>ユーザーID：<br>
+            <input type="number" id="user_id" min=1></p>
+            <p>期日：<br>
+            <input type="date" id="due_from"> ~ <input type="date" id="due_to"></p>
+            <p><input type="button" value="検索" id="search_btn"></p>
+            
+            
+        </form>
+
+        <div id="loading" class="loading is-hidden">処理中...</div>
+        <div id="error" class="error is-hidden"></div>
+
+
+        <div class="form-row">
+        <div class="form-field">
+            <label for="sort">ソート</label>
+            <select id="sort">
+            <option value=""></option>
+            <option value="id">id</option>
+            <option value="user_id">user_id</option>
+            <option value="due_date">期日</option>
+            <option value="priority">優先度</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="order">並べ替え</label>
+            <select id="order">
+            <option value="desc">降順</option>
+            <option value="asc">昇順</option>
+            </select>
+        </div>
+
+        <div class="form-field form-field-small">
+            <label for="limit">表示件数</label>
+            <input type="number" id="limit" min="1" max="200" value="50">
+        </div>
+
+        <div class="form-field form-field-small">
+            <label for="page">ページ</label>
+            <input type="number" id="page" min="1" max="9999" value="1">
+        </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Task_id</th>
+                    <th>User_id</th>
+                    <th>タイトル</th>
+                    <!-- <th>内容</th> -->
+                    <th>ステータス</th>
+                    <th>優先度</th>
+                    <th>期日</th>
+                    <!-- <th>作成日</th> -->
+                    <!-- <th>更新日</th> -->
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tasks_tbody">
+
+            </tbody>
+        </table>
+
+    </main>
+
+    <script type="module" src="./js/pages/index.js" ></script>
+</body>
+
+</html>

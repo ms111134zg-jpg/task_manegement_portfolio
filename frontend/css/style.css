@@ -1,0 +1,177 @@
+:root{
+  --max-width: 980px;
+  --pad: 16px;
+  --gap: 12px;
+  --radius: 10px;
+  --border: 1px solid #d9d9d959;
+  --bg: #fafafa;
+  --card-bg: #fff;
+  --text: #222;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+header{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+header h1{
+  margin: 0 0 8px;
+}
+
+nav ul{
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a{
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+main{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px 24px;
+}
+
+form{
+  background: var(--card-bg);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--pad);
+  margin-bottom: var(--gap);
+}
+
+form p{
+  margin: 0 0 12px;
+}
+
+form input[type="button"]{
+  background: #4f7cff;
+  color: #fff;
+  border: 1px solid #4f7cff;
+}
+
+
+input,
+select,
+textarea{
+  width: 100%;
+  padding: 8px 10px;
+  border: var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+input[type="button"],
+button{
+  width: auto;
+  cursor: pointer;
+}
+
+input[type="checkbox"]{
+  width: auto;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+th,
+td{
+  padding: 10px;
+  text-align: left;
+  border-bottom: var(--border);
+}
+
+thead th{
+  background: #ddddf0;
+}
+
+tbody tr:hover{
+  background: #fafafa;
+}
+
+.loading,
+.error,
+.registration{
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+
+.form-row{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+}
+
+.form-field{
+  flex: 1 0 180px;
+}
+
+.form-field-small{
+  flex: 0 0 120px;
+}
+
+.form-field label{
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+
+.checkbox-line{
+  width: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.error{
+  background: #fff5f5;
+  border-color: #efcaca;
+}
+
+.registration{
+  background: #f4fff4;
+  border-color: #cfe6cf;
+}
+
+.is-hidden{
+  display: none;
+}

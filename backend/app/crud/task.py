@@ -140,7 +140,7 @@ async def create_task(db: AsyncSession, data: TaskCreate):
 
 async def update_task(db: AsyncSession, task_id: int, patch: TaskPatch) -> TaskRead:
 
-    payload = patch.model_dump(exclude_unset=True, exclude_none=True)
+    payload = patch.model_dump(exclude_unset=True) #, exclude_none=True)
     print(f"payload : {payload}")
     if not payload:
         raise ValidationError("no fields to update")

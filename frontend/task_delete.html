@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>タスク削除</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>タスク削除</h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html">←一覧に戻る</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form id="delete_form">
+            <p>タスクid<br>
+            <input type="number" id="task_id" min=1></p>
+            
+            <table id="check_table" class="is-hidden">
+                <thead>
+                    <tr>
+                        <th>Task_id</th>
+                        <th>User_id</th>
+                        <th>タイトル</th>
+                        <th>内容</th>
+                        <th>ステータス</th>
+                        <th>優先度</th>
+                        <th>期日</th>
+                        <!-- <th>作成日</th>
+                        <th>更新日</th> -->
+                    </tr>
+                </thead>
+            <tbody id="task_tbody">
+
+            </tbody>
+            </table>
+            <p><input type="button" id="delete_btn" value="削除" ></p> 
+        </form>
+
+        <div id="loading" class="loading is-hidden">処理中...</div>
+        <div id="registration" class="registration is-hidden">削除完了</div>
+        <div id="error" class="error"></div>
+
+    </main>
+
+    <script type="module" src="./js/pages/task_delete.js"></script>
+</body>
+</html>
