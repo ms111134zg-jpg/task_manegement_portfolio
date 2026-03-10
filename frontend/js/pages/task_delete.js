@@ -19,7 +19,6 @@ function showRegistration(isShow){
 }
 
 function showCheckTable(isShow){
-    //$task_check.classList.toggle("is-hidden", !isShow);
     $check_table.classList.toggle("is-hidden", !isShow);
 }
 
@@ -40,7 +39,6 @@ function showError(e=null, isShow){
  * @returns 
  */
 function parseNullable(target, type){
-    //console.log(`target : ${target}, typeof : ${typeof target}`)
     if(target === undefined || target ===""){
         return null;
     }
@@ -61,7 +59,6 @@ function getIdFromQuery(){
     const idStr = params.get("id");
     const id = Number(idStr);
     if(!idStr || Number.isNaN(id) || id <=0){
-        //throw new Error("URLのidが不正です");
         return;
     }
     return id;
@@ -113,7 +110,6 @@ async function getTaskDetail(){
  
     } catch(e){
         showError(e, true);
-        // showCheckTable(false);
     } 
 }
 

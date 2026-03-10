@@ -29,7 +29,7 @@ let state = {
 let total_tasks = Number(9999);
 let isPageChange = false;
 
-//let isBusy = false;
+
 const setBusy = (isBusy) =>{
     $search_btn.disabled = isBusy;
     $loading.classList.toggle("is-hidden", !isBusy);
@@ -109,7 +109,7 @@ const applyFilters = (filters) => {
     state.filters = filters[0];
     state.pagination = filters[1];
     state.sort = filters[2];
-    //return null;]
+
 }
 
 const buildQueryFromState = () => {
@@ -133,7 +133,7 @@ const renderTable = (rows) => {
             // row.description,
             row.status,
             row.priority,
-            row.due_date ?? "-",  // nullなら "-"
+            row.due_date ?? "-", 
             // row.created_at,
             // row.updated_at
         ];

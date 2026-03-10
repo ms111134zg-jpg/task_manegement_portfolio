@@ -42,16 +42,19 @@ function showError(e, isShow){
 }
 
 
+
+
+
 function getIdFromQuery(){
     const params = new URLSearchParams(window.location.search);
     const idStr = params.get("id");
     const id = Number(idStr);
     if(!idStr || Number.isNaN(id) || id <=0){
-        //throw new Error("URLのidが不正です");
         return;
     }
     return id;
 }
+
 
 /**
  * 
@@ -60,7 +63,6 @@ function getIdFromQuery(){
  * @returns 
  */
 function parseNullable(target, type){
-    //console.log(`target : ${target}, typeof : ${typeof target}`)
     if(target === undefined || target ===""){
         return null;
     }
@@ -80,7 +82,6 @@ function renderTable(task){
     const tbody = $task_tbody;
     tbody.innerHTML = "";
 
-    console.log(task);
 
     const tr = document.createElement("tr");
     const cells = [
@@ -95,7 +96,7 @@ function renderTable(task){
 
     for(const val of cells){
         const td = document.createElement("td");
-        td.textContent = val; //String(val);
+        td.textContent = val; 
         tr.appendChild(td);
     }
 
@@ -133,26 +134,9 @@ function readPayloadFromUI(){
         payload.due_date = null;
     }
     
-    // {
-    //     user_id : user_id,
-    //     title : title,
-    //     status : status,
-    //     priority : priority
-    // }
 
-
-    console.log(payload);
     return  payload;
-    
-    
-    // {
-    //     user_id : user_id,
-    //     title : title,
-    //     description : description,
-    //     status : status,
-    //     priority : priority,
-    //     due_date : due_date
-    // };
+        
 }
 
 
@@ -174,7 +158,6 @@ async function getTaskDetail(){
  
     } catch(e){
         showError(e);
-        // showCheckTable(false);
     } 
 }
 
@@ -196,7 +179,6 @@ async function update(){
         setBusy(false);
     }
 
-    //return result;
 
 }
 

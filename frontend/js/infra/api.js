@@ -19,7 +19,6 @@ const getAPIErrorDetail = async (res, method, url) => {
 
     const ct = res.headers.get("content-type") || "";
     const raw = await res.text();
-    console.log(raw);
     if (ct.includes("application/json")){
         try{
             const body = JSON.parse(raw);
@@ -43,9 +42,6 @@ const getAPIErrorDetail = async (res, method, url) => {
         detail : detail
     };
 
-
-
-    console.log(JSON.stringify(err))
     return err;
 
 }
@@ -93,7 +89,6 @@ const judgeErrorType = (e) => {
 const request = async (method, path, query=null, payload=null) =>{
     /*** URL, pathの結合 ***/
     const absURL = `${BaseURL}${path}`;
-    //console.log(url);
 
     const headers_post = {
         "Content-Type" : "application/json"
@@ -118,15 +113,12 @@ const request = async (method, path, query=null, payload=null) =>{
         try{
             const res = await fetch(paramURL, {method: method, headers: headers_get});
             if (!res.ok) {
-                //const msg = await res.text();
                 const err = await getAPIErrorDetail(res, method, paramURL);
                 const error = new Error("HTTP Error");
                 error.info = err;
-                console.log(JSON.stringify(error));
                 throw error;
             }
 
-            //console.log(`paramURL : ${paramURL}`)
             return await res.json();
         } catch(e) {
             if(e.info){
@@ -148,7 +140,6 @@ const request = async (method, path, query=null, payload=null) =>{
         try{
             const res = await fetch(absURL, {method: method, headers: headers_post, body: JSON.stringify(payload)});
             if (!res.ok) {
-                //const msg = await res.text();
                 const err = await getAPIErrorDetail(res, method, absURL);
                 const error = new Error("HTTP Error");
                 error.info = err;
@@ -176,7 +167,6 @@ const request = async (method, path, query=null, payload=null) =>{
         try{
             const res = await fetch(absURL, {method: method, headers: headers_post, body: JSON.stringify(payload)});
             if (!res.ok) {
-                //const msg = await res.text();
                 const err = await getAPIErrorDetail(res, method, absURL);
                 const error = new Error("HTTP Error");
                 error.info = err;
@@ -205,7 +195,6 @@ const request = async (method, path, query=null, payload=null) =>{
         try{
             const res = await fetch(absURL, {method: method, headers: headers_post});
             if (!res.ok) {
-                //const msg = await res.text();
                 const err = await getAPIErrorDetail(res, method, absURL);
                 const error = new Error("HTTP Error");
                 error.info = err;
@@ -288,12 +277,10 @@ const createUser = async (payload) => {
  * @param {number=} querys.offset int 0<= default=null 
  */
 const listTasks = async (queries = {}) => {
-    //const {q, status, user_id, due_from, due_to, sort, order, limit, offset} = querys;
     
     const query = Object.fromEntries(
         Object.entries(queries).filter(([_, v]) => v != null)
     );
-    //console.log(`not_null_query : ${query}`);
 
     const result = await request("GET", TASKS, query, null);
 

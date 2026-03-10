@@ -16,24 +16,23 @@
     </header>
 
     <main>
-        <form id="task_creat">
+        <form id="task_create_form">
             <p>ユーザー：<br>
-            <select id="user_id">
+            <select id="user_id" required>
                 <option value=""></option>
             </select></p>
-            <!-- <input type="number" id="user_id" min=1 ></p> -->
             <p>タイトル：<br>
-            <input type="text" id="title"></p>
+            <input type="text" id="title" required></p>
             <p>内容：<br>
             <input type="text" id="description"></p>
             <p>ステータス：<br>
-            <select id="status">
+            <select id="status" required>
                 <option value="todo">todo</option>
                 <option value="doing">doing</option>
                 <option value="done">done</option>
             </select></p>
             <p>優先度：<br>
-            <input type="number" id="priority" min="1" max="5" placeholder="１～５"></p>
+            <input type="number" id="priority" min="1" max="5" placeholder="１～５" required></p>
             <p>期日：<br>
             <input type="date" id="due_date"></p>
 

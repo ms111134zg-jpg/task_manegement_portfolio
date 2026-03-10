@@ -1,5 +1,6 @@
 import { listUsers, createTask } from "../infra/api.js";
 
+const $task_create_form = document.getElementById("task_create_form");
 const $user_id = document.getElementById("user_id");
 const $title = document.getElementById("title");
 const $description = document.getElementById("description");
@@ -30,21 +31,26 @@ function showRegistration(isReg){
 }
 
 
+function updateSubmitState(){
+    const userid_input = $user_id.checkValidity();
+    const title_input = $title.checkValidity();
+    const status_input = $status.checkValidity();
+    const priority_input = $priority.checkValidity();
+
+    if(userid_input && title_input && status_input && priority_input){
+        $create_btn.disabled = false;
+    } else{
+        $create_btn.disabled = true;
+    }
+        
+}
+
 async function createUserOption(){
     let select = $user_id;
 
     try{
         const users = await listUsers({limit: 200, offset: 0});
 
-        // for(let num in users){
-        //     let user_id = Number(users[num].id);
-        //     let name = users[num].name;
-
-        //     let op = document.createElement("option");
-        //     op.setAttribute("value", user_id);
-        //     op.textContent= name;
-        //     select.appendChild(op);
-        // }
         for(let user of users){
 
             let user_id = Number(user.id);
@@ -126,8 +132,6 @@ async function create(){
         setBusy(false);
     }
 
-    //return result;
-
 }
 
 
@@ -135,11 +139,17 @@ document.addEventListener("DOMContentLoaded", () => {
     setBusy(false);
     showRegistration(false);
     showError(null, false);
+    updateSubmitState();
     createUserOption();
 })
 
 
 $create_btn.addEventListener("click", (event) => {
     create();
+})
+
+
+$task_create_form.addEventListener("input", (event) => {
+    updateSubmitState();
 })
 
