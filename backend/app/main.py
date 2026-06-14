@@ -7,6 +7,7 @@ from datetime import date
 from fastapi import FastAPI, Depends, Query, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -41,8 +42,8 @@ logger = logging.getLogger("app.db")
 
 #####======  middleware CORS 定義 =====#####
 origins = [
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 app.add_middleware(
@@ -146,6 +147,8 @@ async def  exception_hendler(request : Request, e : Exception ):
 app.include_router(health_router)   #疎通チェック用ルータ
 app.include_router(users_router)    ##users用ルータ
 app.include_router(tasks_router)    #tasks用ルータ
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 
 

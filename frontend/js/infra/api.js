@@ -1,6 +1,6 @@
 
 /*** API URL, pathの定義 ***/  
-const BaseURL = "http://localhost:8000";  //"http://localhost:8000"; "http://127.0.0.1:8000"
+const BaseURL = "";
 const USERS = "/api/users"
 const TASKS = "/api/tasks"
 const STATS = "/api/stats/tasks-by-status"
