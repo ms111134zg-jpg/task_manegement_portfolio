@@ -103,12 +103,54 @@ flowchart LR
 
 ## セットアップと起動
 
-### セットアップ手順
+起動方法は **Docker（推奨）** と **ローカル手動セットアップ** の2通りあります。
 
-#### 前提（必要なもの）
+---
+
+### Docker で起動する（推奨）
+
+#### 前提
+- Docker / Docker Compose がインストールされていること
+
+#### 手順
+
+```bash
+# 1. リポジトリをclone
+git clone <repository-url>
+cd task_management
+
+# 2. .env を用意（テンプレートをコピーしてパスワードを設定）
+cp .env.example .env
+
+# 3. 起動（初回はイメージのビルドも行われます）
+docker compose up --build
+```
+
+起動後のURL：
+- Swagger UI：`http://localhost:8000/docs`
+- ヘルスチェック：`http://localhost:8000/health`
+- DB疎通：`http://localhost:8000/health/db`
+
+> DBの初期化（schema / seed）は自動で実行されます。`docker compose up` するだけで使い始められます。
+
+#### 停止・リセット
+
+```bash
+# 停止
+docker compose down
+
+# DBデータも含めて完全リセット
+docker compose down -v
+```
+
+---
+
+### ローカル手動セットアップ
+
+#### 前提
 - Python（3.10+）
-- PostgreSQL（ローカル or Dockerなど、方法は自由）
-- `psql` コマンド（schema/seed投入に使用）
+- PostgreSQL（ローカル起動済み）
+- `psql` コマンド
 - フロントを開くためのローカルHTTPサーバ（推奨：VS Code Live Server）
 
 #### 手順チェックリスト
@@ -119,7 +161,7 @@ flowchart LR
 - [ ] DBとユーザーを作成
 - [ ] `db/schema.sql` を実行（テーブル作成）
 - [ ] `db/seed.sql` を実行（初期データ投入）
-- [ ] `.env` を用意
+- [ ] `.env` を用意（`POSTGRE_HOST=localhost` に変更）
 - [ ] バックエンド起動（port 8000）
 - [ ] フロント起動（port 5500推奨）→ 画面で動作確認
 
@@ -133,16 +175,11 @@ pip install -r requirements.txt
 ```
 
 #### 環境変数（`.env`）
-`backend/app/settings.py` が `.env` を読み込みます。
+`.env.example` をコピーして `.env` を作成してください。  
+ローカル手動セットアップの場合は `POSTGRE_HOST` を `localhost` に変更します。
 
-`.env` 例（開発用）：
-```env
-POSTGRE_HOST=localhost
-POSTGRE_PORT=5432
-POSTGRE_DB=app_db
-POSTGRE_USER=app_user
-POSTGRE_PW=app_password
-APP_ENV=dev
+```bash
+cp .env.example .env
 ```
 
 > `APP_ENV` は用意していますが、現時点では環境ごとの挙動切り替えはしていません。
@@ -172,7 +209,7 @@ psql -h localhost -U app_user -d app_db
 
 ---
 
-### 起動方法
+### 起動方法（ローカル手動）
 
 #### バックエンド（FastAPI）
 ```bash

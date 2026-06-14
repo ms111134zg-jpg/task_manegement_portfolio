@@ -1,36 +1,45 @@
-#####====== Import Lib =====#####
-import io
+#####=====  import =====#####
+##== 標準ライブラリ ==##
 import logging
-from datetime import date, datetime
-from dataclasses import dataclass
+from datetime import date
 
-
-from fastapi import FastAPI, Depends, Query, Form, Response, Request, status
-from fastapi import HTTPException
+##== 外部ライブラリ ==##
+from fastapi import FastAPI, Depends, Query, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+##== ローカルモジュール ==##
+from .routers.health import router as health_router
+from .routers.users import router as users_router
+from .routers.tasks import router as tasks_router
+
 from .db import get_db
 from .crud.user import read_users_list, read_user, create_user
 from .crud.task import read_tasks_list, read_task, create_task, stats_tasks_by_status, update_task, delete_task
 from .schema_pydantic.user import UserRead, UserCreate
-from .schema_pydantic.task import TaskCreate, TaskPatch, TaskRead, TaskDelete, TaskListResponse
+from .schema_pydantic.task import TaskCreate, TaskPatch, TaskRead, TaskListResponse
 from .schema_pydantic.stats import StatsResponse
-from .models import Task, User
-from .errors import AppError, ConflictError, NotFoundError, ValidationError
+from .errors import AppError, NotFoundError
 
+
+#####=====  API定義  =====#####
 app = FastAPI()
 
+
+
+#####=====  ログ定義  =====#####
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logger = logging.getLogger("app.db")
 
-#####====== CORS =====#####
+
+
+#####======  middleware CORS 定義 =====#####
 origins = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
@@ -45,24 +54,8 @@ app.add_middleware(
 )
 
 
-#####====== DATACLASS =====#####
 
-#####====== API =====#####
-
-
-##== 疎通チェック ==##
-@app.get("/health")
-def health_check():
-    return {"status": "running"}
-
-@app.get("/health/db")
-async def health_db(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(text("SELECT 1;"))
-    return {"ok":True, "value": result.scalar_one()}
-
-
-
-##== 例外ハンドラ ==##
+#####======  例外ハンドラ  =====#####
 @app.exception_handler(AppError)
 async def app_error_handler(request : Request, exc : AppError):
 
@@ -147,148 +140,173 @@ async def  exception_hendler(request : Request, e : Exception ):
     )
 
 
-##== users ==##
-@app.post("/api/users", response_model=UserRead)
-async def post_user(payload: UserCreate, db: AsyncSession = Depends(get_db)):
 
-    user = await create_user(db=db, data=payload)
-    return user
+#####======  API router =====#####
+
+app.include_router(health_router)   #疎通チェック用ルータ
+app.include_router(users_router)    ##users用ルータ
+app.include_router(tasks_router)    #tasks用ルータ
 
 
 
-@app.get("/api/users", response_model=list[UserRead])
-async def get_users(
-    limit: int = Query(50, ge=1, le=200),
-    offset: int = Query(0, ge=0),
-    db: AsyncSession = Depends(get_db)
-):
+
+
+# ##== 疎通チェック ==##
+# @app.get("/health")
+# def health_check():
+#     return {"status": "running"}
+
+# @app.get("/health/db")
+# async def health_db(db: AsyncSession = Depends(get_db)):
+#     result = await db.execute(text("SELECT 1;"))
+#     return {"ok":True, "value": result.scalar_one()}
+
+
+
+
+
+# ##== users ==##
+# @app.post("/api/users", response_model=UserRead)
+# async def post_user(payload: UserCreate, db: AsyncSession = Depends(get_db)):
+
+#     user = await create_user(db=db, data=payload)
+#     return user
+
+
+
+# @app.get("/api/users", response_model=list[UserRead])
+# async def get_users(
+#     limit: int = Query(50, ge=1, le=200),
+#     offset: int = Query(0, ge=0),
+#     db: AsyncSession = Depends(get_db)
+# ):
     
-    users = await read_users_list(db, limit=limit, offset=offset)
-    return users
+#     users = await read_users_list(db, limit=limit, offset=offset)
+#     return users
 
 
 
-@app.get("/api/users/{id}", response_model=UserRead)
-async def get_user(
-    id: int,
-    db: AsyncSession = Depends(get_db)
-):
-    user = await read_user(db=db, id=id)
-    if user is None:
-        raise NotFoundError()
-    return user
+# @app.get("/api/users/{id}", response_model=UserRead)
+# async def get_user(
+#     id: int,
+#     db: AsyncSession = Depends(get_db)
+# ):
+#     user = await read_user(db=db, id=id)
+#     if user is None:
+#         raise NotFoundError()
+#     return user
 
 
 
-##== tasks ==##
-@app.get("/api/tasks", response_model=TaskListResponse)
-async def get_tasks(
-    q: str | None = Query(None, max_length=50),
-    status: str | None = Query(None),
-    user_id: int | None = Query(None, ge = 1),
-    due_from: date | None = Query(None),
-    due_to: date | None = Query(None),
-    sort: str | None = Query(None),
-    order: str = Query("desc"),
-    limit: int = Query(50, ge=1, le=200),
-    offset: int = Query(0, ge=0),
-    db: AsyncSession = Depends(get_db)
-):
-    tasks = await read_tasks_list(
-        db=db, 
-        q=q,
-        status=status,
-        user_id=user_id,
-        due_from=due_from,
-        due_to=due_to,
-        sort=sort,
-        order=order,
-        limit=limit, 
-        offset=offset
-        )
+# ##== tasks ==##
+# @app.get("/api/tasks", response_model=TaskListResponse)
+# async def get_tasks(
+#     q: str | None = Query(None, max_length=50),
+#     status: str | None = Query(None),
+#     user_id: int | None = Query(None, ge = 1),
+#     due_from: date | None = Query(None),
+#     due_to: date | None = Query(None),
+#     sort: str | None = Query(None),
+#     order: str = Query("desc"),
+#     limit: int = Query(50, ge=1, le=200),
+#     offset: int = Query(0, ge=0),
+#     db: AsyncSession = Depends(get_db)
+# ):
+#     tasks = await read_tasks_list(
+#         db=db, 
+#         q=q,
+#         status=status,
+#         user_id=user_id,
+#         due_from=due_from,
+#         due_to=due_to,
+#         sort=sort,
+#         order=order,
+#         limit=limit, 
+#         offset=offset
+#         )
     
-    return tasks
+#     return tasks
 
 
-@app.get("/api/tasks/{id}", response_model=TaskRead)
-async def get_task(
-    id: int,
-    db: AsyncSession = Depends(get_db)
-):
+# @app.get("/api/tasks/{id}", response_model=TaskRead)
+# async def get_task(
+#     id: int,
+#     db: AsyncSession = Depends(get_db)
+# ):
     
-    task = await read_task(db=db, id=id)
-    if task is None:
-        raise  NotFoundError()   #HTTPException(status_code=404, detail="task not found")
+#     task = await read_task(db=db, id=id)
+#     if task is None:
+#         raise  NotFoundError()   #HTTPException(status_code=404, detail="task not found")
     
-    return task
+#     return task
 
 
-@app.post("/api/tasks", response_model=TaskRead)
-async def post_task(
-    payload: TaskCreate,
-    db: AsyncSession = Depends(get_db)
-):
-    # try:
-    task = await create_task(db=db, data=payload)
+# @app.post("/api/tasks", response_model=TaskRead)
+# async def post_task(
+#     payload: TaskCreate,
+#     db: AsyncSession = Depends(get_db)
+# ):
+#     # try:
+#     task = await create_task(db=db, data=payload)
         
-    # except IntegrityError as e:
-    #     await db.rollback()
-    #     orig = getattr(e, "orig", None)
-    #     logger.exception(
-    #         "DB IntegrityError sqlstate=%s constraint=%s",
-    #         getattr(orig, "pgcode", None),
-    #         getattr(getattr(orig, "diag", None), "constraint_name", None),
-    #     )
-    #     raise
+#     # except IntegrityError as e:
+#     #     await db.rollback()
+#     #     orig = getattr(e, "orig", None)
+#     #     logger.exception(
+#     #         "DB IntegrityError sqlstate=%s constraint=%s",
+#     #         getattr(orig, "pgcode", None),
+#     #         getattr(getattr(orig, "diag", None), "constraint_name", None),
+#     #     )
+#     #     raise
 
-    return task
+#     return task
 
 
-@app.patch("/api/tasks/{task_id}", response_model= TaskRead)
-async def patch_tasks( task_id: int, payload : TaskPatch,  db: AsyncSession = Depends(get_db) ) :
+# @app.patch("/api/tasks/{task_id}", response_model= TaskRead)
+# async def patch_tasks( task_id: int, payload : TaskPatch,  db: AsyncSession = Depends(get_db) ) :
     
-    # try:
-    task = await update_task(db= db, task_id= task_id, patch= payload)
-    # except :
-    #     raise
+#     # try:
+#     task = await update_task(db= db, task_id= task_id, patch= payload)
+#     # except :
+#     #     raise
 
-    return task
+#     return task
 
 
-@app.delete("/api/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_task_api(task_id : int, db: AsyncSession = Depends(get_db)) :
+# @app.delete("/api/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+# async def delete_task_api(task_id : int, db: AsyncSession = Depends(get_db)) :
 
-    # try: 
-    result = await delete_task(db = db, task_id = task_id)
+#     # try: 
+#     result = await delete_task(db = db, task_id = task_id)
     
-    # except :
-    #     raise
+#     # except :
+#     #     raise
 
-    # return TaskDelete(id= result)
+#     # return TaskDelete(id= result)
 
-    
-
-
-
-
-
-@app.get("/api/stats/tasks-by-status", response_model = StatsResponse)
-async def get_tasks_by_status(db: AsyncSession = Depends(get_db)):
-
-    # try:
-    stats = await stats_tasks_by_status(db)
     
 
 
 
-    # except IntegrityError as e:
-    #     await db.rollback()
-    #     orig = getattr(e, "orig", None)
-    #     logger.exception(
-    #         "DB IntegrityError sqlstate=%s constraint=%s",
-    #         getattr(orig, "pgcode", None),
-    #         getattr(getattr(orig, "diag", None), "constraint_name", None),
-    #     )
-    #     raise
 
-    return stats
+
+# @app.get("/api/stats/tasks-by-status", response_model = StatsResponse)
+# async def get_tasks_by_status(db: AsyncSession = Depends(get_db)):
+
+#     # try:
+#     stats = await stats_tasks_by_status(db)
+    
+
+
+
+#     # except IntegrityError as e:
+#     #     await db.rollback()
+#     #     orig = getattr(e, "orig", None)
+#     #     logger.exception(
+#     #         "DB IntegrityError sqlstate=%s constraint=%s",
+#     #         getattr(orig, "pgcode", None),
+#     #         getattr(getattr(orig, "diag", None), "constraint_name", None),
+#     #     )
+#     #     raise
+
+#     return stats
