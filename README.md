@@ -1,6 +1,11 @@
 
 # タスク管理MVP（FastAPI + PostgreSQL）
 
+>**※注釈**
+> このREADMEはタスク管理アプリのバックエンド(FastAPI+PostgrSQL)のMVP実装時のものです。
+> リポジトリにはフロントエンド(HTML+JavaScript+CSS)の実装まで行ったタスク管理アプリMVPとなっています。
+>（READMEは更新予定。）
+
 > **要約**  
 > このリポジトリは、**「RDBMS（PostgreSQL）を使ってタスク管理アプリを作る」**ための学習用MVPです。  
 > バックエンドは **FastAPI + async SQLAlchemy** で、**タスクのCRUD / 一覧（検索・フィルタ・ソート・ページング）/ status別集計**まで実装しています。  
