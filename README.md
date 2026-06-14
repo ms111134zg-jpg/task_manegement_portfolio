@@ -297,17 +297,17 @@ erDiagram
   USERS {
     BIGSERIAL id PK
     VARCHAR name
-    VARCHAR email UNIQUE
+    VARCHAR email UK
     TIMESTAMPTZ created_at
   }
   TASKS {
     BIGSERIAL id PK
     BIGINT user_id FK
     VARCHAR title
-    TEXT description Nullable
-    VARCHAR status "todo/doing/done"
-    SMALLINT priority "1..5"
-    DATE due_date Nullable
+    TEXT description 
+    VARCHAR status 
+    SMALLINT priority 
+    DATE due_date 
     TIMESTAMPTZ created_at
     TIMESTAMPTZ updated_at
   }
