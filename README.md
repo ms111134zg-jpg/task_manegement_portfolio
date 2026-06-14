@@ -132,9 +132,13 @@ docker compose up --build
 ```
 
 起動後のURL：
-- Swagger UI：`http://localhost:8000/docs`
-- ヘルスチェック：`http://localhost:8000/health`
-- DB疎通：`http://localhost:8000/health/db`
+
+| サービス | URL |
+|---|---|
+| フロントエンド | `http://localhost:5500/index.html` |
+| Swagger UI | `http://localhost:8000/docs` |
+| ヘルスチェック | `http://localhost:8000/health` |
+| DB疎通確認 | `http://localhost:8000/health/db` |
 
 > DBの初期化（schema / seed）は自動で実行されます。`docker compose up` するだけで使い始められます。
 
